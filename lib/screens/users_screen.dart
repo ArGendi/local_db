@@ -17,9 +17,9 @@ class _UsersScreenState extends State<UsersScreen> {
      List<User> tempUsers = [];
     for(var key in box.keys.toList()){ // [0,1,2]
       Map data = box.get(key);
-      tempUsers.add(
-        User(data['email'], data['password'])
-      );
+      User newUser = User.fromMap(data);
+      newUser.key = key;
+      tempUsers.add(newUser);
     }
     setState(() {
       users = tempUsers;
@@ -42,7 +42,35 @@ class _UsersScreenState extends State<UsersScreen> {
         padding: const EdgeInsets.all(20.0),
         child: ListView.separated(
           itemBuilder: (context, i){
-            return Text("${users[i].email} | ${users[i].password}");
+            return Row(
+              children: [
+                Text("${users[i].email} | ${users[i].password}"),
+                Spacer(),
+                IconButton(
+                  onPressed: (){
+                    Box box = Hive.box("accounts");
+                    box.put(users[i].key, {
+                      "email": "mohamed@gmail.com",
+                      "password": users[i].password,
+                    });
+                    setState(() {
+                      users[i].email = "mohamed@gmail.com";
+                    });
+                  }, 
+                  icon: Icon(Icons.update,),
+                ),
+                IconButton(
+                  onPressed: (){
+                    Box box = Hive.box("accounts");
+                    box.delete(users[i].key);
+                    setState(() {
+                      users.removeAt(i);
+                    });
+                  }, 
+                  icon: Icon(Icons.delete, color: Colors.red,),
+                ),
+              ],
+            );
           }, 
           separatorBuilder: (context, i){
             return SizedBox(height: 10,);

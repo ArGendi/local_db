@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:online_61/local/cache.dart';
+import 'package:online_61/screens/add_contact.dart';
 import 'package:online_61/screens/home_screen.dart';
 import 'package:online_61/screens/login_screen.dart';
 
@@ -19,7 +20,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Cache.getEmail() != null ? HomeScreen() : LoginScreen(),
+      //home: Cache.getEmail() != null ? HomeScreen() : LoginScreen(),
+      home: AddContactScreen()
     );
   }
 }

@@ -27,6 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextFormField(
+                initialValue: 'abdo@gmail.com',
                 onSaved: (value){
                   email = value;
                 },
@@ -38,7 +39,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
-                  labelText: 'Email'
+                  //labelText: 'Email',
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
                 ),
               ),
               SizedBox(height: 15,),
