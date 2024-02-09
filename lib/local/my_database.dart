@@ -15,15 +15,16 @@ class MyDatabase{
     );
   }
 
-  void insert(Contact contact) async{
-    Database db = await initDB();
-    // db.insert('contacts', {
-    //   'name': contact.name,
-    //   "phone": contact.phone,
-    // });
-    db.insert('contacts', contact.toMap());
-
-    //db.rawInsert(""); insert by sql
+  Future<bool> insert(Contact contact) async{
+    try{
+      Database db = await initDB();
+      await db.insert('contacts', contact.toMap());
+      // await db.insert('conta', contact.toMap()); --> will go to catch and returns false
+      return true;
+    }
+    catch(e){
+      return false;
+    }
   }
 
   void delete(String phone) async{

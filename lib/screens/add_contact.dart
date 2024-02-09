@@ -4,8 +4,10 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:online_61/local/cache.dart';
 import 'package:online_61/local/my_database.dart';
 import 'package:online_61/models/contact.dart';
+import 'package:online_61/providers/contacts_provider.dart';
 import 'package:online_61/screens/contacts_screen.dart';
 import 'package:online_61/screens/home_screen.dart';
+import 'package:provider/provider.dart';
 
 class AddContactScreen extends StatefulWidget {
   const AddContactScreen({super.key});
@@ -61,8 +63,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
               ElevatedButton(
                 onPressed: () async{
                   formKey.currentState!.save();
-                  MyDatabase myDB = MyDatabase();
-                  myDB.insert(contact);
+                  Provider.of<ContactsProvider>(context, listen: false).addContact(context ,contact);
                   formKey.currentState!.reset();
                 }, 
                 child: Text("Add"),

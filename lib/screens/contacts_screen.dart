@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:online_61/local/my_database.dart';
 import 'package:online_61/models/contact.dart';
+import 'package:online_61/providers/contacts_provider.dart';
+import 'package:provider/provider.dart';
 
 class ContactsScreen extends StatefulWidget {
   const ContactsScreen({super.key});
@@ -10,21 +12,12 @@ class ContactsScreen extends StatefulWidget {
 }
 
 class _ContactsScreenState extends State<ContactsScreen> {
-  List<Contact> contacts = [];
-
-  void getData() async{
-    MyDatabase myDB = MyDatabase();
-    List<Contact> tempContacts = await myDB.getContacts();
-    setState(() {
-      contacts = tempContacts;
-    });
-  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getData();
+    Provider.of<ContactsProvider>(context, listen: false).getContacts();
   }
 
   @override
@@ -33,19 +26,23 @@ class _ContactsScreenState extends State<ContactsScreen> {
       appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: ListView.separated(
-          itemBuilder: (context, i){
-            return Column(
-              children: [
-                Text(contacts[i].name.toString()),
-                Text(contacts[i].phone.toString()),
-              ],
+        child: Consumer<ContactsProvider>(
+          builder: (context, provider, _){
+            return ListView.separated(
+              itemBuilder: (context, i){
+                return Column(
+                  children: [
+                    Text(provider.contacts[i].name.toString()),
+                    Text(provider.contacts[i].phone.toString()),
+                  ],
+                );
+              }, 
+              separatorBuilder: (context, i){
+                return SizedBox(height: 10,);
+              }, 
+              itemCount: provider.contacts.length,
             );
-          }, 
-          separatorBuilder: (context, i){
-            return SizedBox(height: 10,);
-          }, 
-          itemCount: contacts.length,
+          }
         ),
       ),
     );
