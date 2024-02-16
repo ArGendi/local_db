@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:online_61/cubits/contacts_cubit.dart';
 import 'package:online_61/local/cache.dart';
 import 'package:online_61/providers/contacts_provider.dart';
 import 'package:online_61/screens/add_contact.dart';
@@ -20,9 +22,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return MultiBlocProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => ContactsProvider())
+        //ChangeNotifierProvider(create: (context) => ContactsProvider()) --> provider
+        BlocProvider(create: (context) => ContactsCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

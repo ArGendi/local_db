@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:online_61/cubits/contacts_cubit.dart';
+import 'package:online_61/cubits/contacts_state.dart';
 import 'package:online_61/local/cache.dart';
 import 'package:online_61/local/my_database.dart';
 import 'package:online_61/models/contact.dart';
@@ -60,14 +64,24 @@ class _AddContactScreenState extends State<AddContactScreen> {
                 ),
               ),
               SizedBox(height: 15,),
-              ElevatedButton(
-                onPressed: () async{
-                  formKey.currentState!.save();
-                  Provider.of<ContactsProvider>(context, listen: false).addContact(context ,contact);
-                  formKey.currentState!.reset();
-                }, 
-                child: Text("Add"),
-              )
+              BlocBuilder<ContactsCubit, ContactsState>(
+                builder: (context, state){
+                  if(state is LoadingState){
+                    return Text("Loading...");
+                  }
+                  else{
+                    return ElevatedButton(
+                      onPressed: () async{
+                        formKey.currentState!.save();
+                        //Provider.of<ContactsProvider>(context, listen: false).addContact(context ,contact);
+                        BlocProvider.of<ContactsCubit>(context).addContact(context, contact);
+                        formKey.currentState!.reset();
+                      }, 
+                      child: Text("Add"),
+                    );
+                  }
+                },
+              ),
             ],
           ),
         ),

@@ -10,7 +10,7 @@ class MyDatabase{
       version: 1,
       onUpgrade: (db, oldVersion, newVersion) {},
       onCreate: (db, version) {
-        db.execute("CREATE TABLE contacts(name TEXT, phone TEXT)");
+        db.execute("CREATE TABLE contacts(id INTEGER AUTOINCREMENT, name TEXT, phone TEXT)");
       },
     );
   }
